@@ -1,37 +1,351 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix Open</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buka di Netflix</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-<style>
-body{
-    background:#111;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-    font-family:Arial;
-}
+    :root {
+      --red:    #E50914;
+      --red-dk: #b20710;
+      --bg:     #0a0a0a;
+      --card:   #141414;
+      --border: #2a2a2a;
+      --text:   #e5e5e5;
+      --muted:  #808080;
+    }
 
-a{
-    background:#E50914;
-    color:white;
-    padding:18px 40px;
-    text-decoration:none;
-    border-radius:12px;
-    font-size:22px;
-}
-</style>
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* ── logo ── */
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 4px;
+      color: var(--red);
+      margin-bottom: 6px;
+      text-shadow: 0 0 40px rgba(229,9,20,.4);
+    }
+    .tagline {
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 36px;
+    }
+
+    /* ── card ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    label {
+      display: block;
+      font-size: .72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .input-wrap input:focus { border-color: var(--red); }
+    .input-wrap input::placeholder { color: #444; }
+
+    /* ── presets ── */
+    .preset-label {
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .preset-btn {
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .preset-btn:hover { border-color: var(--red); color: var(--text); }
+
+    /* ── main button ── */
+    .btn-open {
+      width: 100%;
+      background: var(--red);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn-open:hover  { background: var(--red-dk); }
+    .btn-open:active { transform: scale(.98); }
+
+    /* ── status ── */
+    #status {
+      margin-top: 16px;
+      font-size: .82rem;
+      text-align: center;
+      min-height: 20px;
+      transition: opacity .3s;
+    }
+    #status.success { color: #4caf50; }
+    #status.error   { color: #ff6b6b; }
+    #status.info    { color: var(--muted); }
+
+    /* ── fallback link ── */
+    #fallback-link {
+      display: none;
+      margin-top: 14px;
+      text-align: center;
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    #fallback-link a {
+      color: var(--red);
+      text-decoration: none;
+    }
+    #fallback-link a:hover { text-decoration: underline; }
+
+    /* ── how-to ── */
+    .howto {
+      margin-top: 28px;
+      width: 100%;
+      max-width: 420px;
+    }
+    .howto-title {
+      font-size: .7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .step-num {
+      background: var(--red);
+      color: #fff;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: .85rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step p { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+    .step p strong { color: var(--text); }
+  </style>
 </head>
 <body>
 
-<a href="nflx://www.netflix.com">
-    OPEN NETFLIX
-</a>
+  <div class="logo">NETFLIX</div>
+  <p class="tagline">Deep Link Launcher</p>
 
+  <div class="card">
+    <label for="urlInput">URL Netflix</label>
+    <div class="input-wrap">
+      <input
+        type="text"
+        id="urlInput"
+        placeholder="https://www.netflix.com/title/12345678"
+      />
+    </div>
+
+    <p class="preset-label">Contoh cepat</p>
+    <div class="presets">
+      <button class="preset-btn" onclick="setPreset('home')">🏠 Beranda</button>
+      <button class="preset-btn" onclick="setPreset('search')">🔍 Cari</button>
+      <button class="preset-btn" onclick="setPreset('download')">⬇ Unduhan</button>
+      <button class="preset-btn" onclick="setPreset('account')">👤 Akun</button>
+    </div>
+
+    <button class="btn-open" onclick="openNetflix()">BUKA DI APLIKASI</button>
+
+    <p id="status" class="info">Masukkan URL Netflix lalu tekan tombol di atas.</p>
+    <p id="fallback-link">Aplikasi tidak terbuka? <a id="web-link" href="#">Buka di browser ↗</a></p>
+  </div>
+
+  <!-- cara kerja -->
+  <div class="howto">
+    <p class="howto-title">Cara kerja</p>
+    <div class="step">
+      <div class="step-num">1</div>
+      <p>Tempel <strong>URL Netflix</strong> (netflix.com/title/...) ke kolom di atas.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <p>Tekan <strong>"Buka di Aplikasi"</strong> — halaman ini mengubahnya menjadi deep-link <code>nflx://</code>.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <p>Android membuka <strong>aplikasi Netflix</strong> langsung ke konten tersebut.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <p>Jika aplikasi tidak terinstal, link <strong>fallback</strong> ke browser akan muncul otomatis.</p>
+    </div>
+  </div>
+
+  <script>
+    // Preset shortcuts
+    const PRESETS = {
+      home:     'https://www.netflix.com/',
+      search:   'https://www.netflix.com/search',
+      download: 'https://www.netflix.com/downloads',
+      account:  'https://www.netflix.com/youraccount',
+    };
+
+    function setPreset(key) {
+      document.getElementById('urlInput').value = PRESETS[key];
+      clearStatus();
+    }
+
+    function clearStatus() {
+      const s = document.getElementById('status');
+      s.className = 'info';
+      s.textContent = 'Siap dibuka.';
+      document.getElementById('fallback-link').style.display = 'none';
+    }
+
+    function setStatus(msg, type) {
+      const s = document.getElementById('status');
+      s.className = type;
+      s.textContent = msg;
+    }
+
+    /**
+     * Ubah URL netflix.com → deep-link nflx://
+     *
+     * Skema resmi Netflix Android:
+     *   nflx://www.netflix.com/title/<id>   → halaman judul
+     *   nflx://www.netflix.com/search       → halaman pencarian
+     *   nflx://www.netflix.com/             → beranda
+     *
+     * Untuk URL lain (yang tidak punya skema nflx yang mapan),
+     * kita gunakan intent:// agar Android tetap bisa mengarahkan.
+     */
+    function buildDeepLink(rawUrl) {
+      let url;
+      try {
+        url = new URL(rawUrl.trim());
+      } catch {
+        return null; // URL tidak valid
+      }
+
+      // Pastikan domain netflix
+      if (!url.hostname.includes('netflix.com')) return null;
+
+      // Ganti skema https → nflx
+      const nflxUrl = 'nflx://' + url.hostname + url.pathname + url.search + url.hash;
+
+      // Intent URL sebagai cadangan (lebih andal di beberapa Android)
+      const intentUrl =
+        'intent://' + url.hostname + url.pathname + url.search + url.hash +
+        '#Intent;scheme=https;package=com.netflix.mediaclient;end';
+
+      return { nflxUrl, intentUrl, webUrl: rawUrl.trim() };
+    }
+
+    function openNetflix() {
+      const raw = document.getElementById('urlInput').value.trim();
+
+      if (!raw) {
+        setStatus('⚠️ Masukkan URL Netflix terlebih dahulu.', 'error');
+        return;
+      }
+
+      const links = buildDeepLink(raw);
+
+      if (!links) {
+        setStatus('⚠️ URL tidak valid atau bukan dari netflix.com.', 'error');
+        return;
+      }
+
+      // Tampilkan fallback link
+      const fallbackEl  = document.getElementById('fallback-link');
+      const webLinkEl   = document.getElementById('web-link');
+      webLinkEl.href    = links.webUrl;
+      fallbackEl.style.display = 'block';
+
+      setStatus('⏳ Membuka aplikasi Netflix…', 'info');
+
+      // Coba buka via nflx:// (intent URL lebih andal di Android modern)
+      const isAndroid = /android/i.test(navigator.userAgent);
+
+      if (isAndroid) {
+        // Gunakan intent:// di Android agar bisa fallback ke Play Store
+        window.location.href = links.intentUrl;
+      } else {
+        // Desktop/iOS: coba nflx://, fallback ke web
+        window.location.href = links.nflxUrl;
+      }
+
+      // Jika setelah 2 detik halaman masih aktif, berarti app tidak terbuka
+      setTimeout(() => {
+        setStatus('ℹ️ Aplikasi tidak terbuka? Gunakan link fallback di bawah.', 'info');
+      }, 2000);
+    }
+
+    // Bisa juga tekan Enter
+    document.getElementById('urlInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') openNetflix();
+    });
+  </script>
 </body>
 </html>
