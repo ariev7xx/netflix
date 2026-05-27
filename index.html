@@ -1,10 +1,26 @@
-<button onclick="openNetflix()">
-Buka Netflix
-</button>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix Auto Open</title>
+</head>
+<body style="background:black;color:white;font-family:Arial;text-align:center;padding-top:50px;">
+
+<h2>Mencoba membuka Netflix...</h2>
 
 <script>
-function openNetflix(){
-    window.location.href =
-    "intent://www.netflix.com/#Intent;scheme=https;package=com.netflix.mediaclient;end";
-}
+
+// paksa buka aplikasi Netflix
+location.replace(
+"intent://www.netflix.com/#Intent;" +
+"scheme=https;" +
+"package=com.netflix.mediaclient;" +
+"S.browser_fallback_url=https%3A%2F%2Fwww.netflix.com;" +
+"end"
+);
+
 </script>
+
+</body>
+</html>
