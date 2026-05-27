@@ -231,7 +231,7 @@
 
     <div class="btn-group">
       <button class="btn-open" onclick="openNetflix()">BUKA DI APLIKASI</button>
-      <a id="btn-fallback" class="btn-fallback visible" href="https://www.netflix.com" target="_blank" rel="noopener">BUKA DI NETFLIX ↗</a>
+      <a id="btn-fallback" class="btn-fallback visible" href="https://www.netflix.com" target="_blank" rel="noopener">BUKA NETFLIX ↗</a>
     </div>
 
     <p id="status" class="info">Masukkan URL Netflix lalu tekan tombol di atas.</p>
@@ -360,6 +360,11 @@
     // Bisa juga tekan Enter
     document.getElementById('urlInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') openNetflix();
+    });
+
+    // Otomatis buka www.netflix.com di tab baru saat halaman dimuat
+    window.addEventListener('load', () => {
+      window.open('https://www.netflix.com', '_blank');
     });
   </script>
 </body>
