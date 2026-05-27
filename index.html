@@ -3,37 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto Open Netflix</title>
-
-<style>
-body{
-    background:#111;
-    color:white;
-    font-family:Arial;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    margin:0;
-    text-align:center;
-}
-</style>
+<title>Open Netflix</title>
 </head>
 <body>
 
-<div>
-    <h1>Membuka Netflix...</h1>
-    <p>Jika aplikasi tidak terbuka, akan diarahkan ke website.</p>
-</div>
+<h2>Membuka Netflix...</h2>
 
 <script>
 
-// langsung buka aplikasi Netflix
-window.location.href = "nflx://www.netflix.com";
+window.location.href =
+"intent://www.netflix.com/#Intent;" +
+"scheme=https;" +
+"package=com.netflix.mediaclient;" +
+"end";
 
-// fallback ke website jika aplikasi tidak ada
-setTimeout(function(){
-    window.location.href = "https://www.netflix.com";
+setTimeout(function () {
+    window.location.href = "https://play.google.com/store/apps/details?id=com.netflix.mediaclient";
 }, 2000);
 
 </script>
