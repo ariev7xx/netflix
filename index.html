@@ -141,19 +141,33 @@
     #status.error   { color: #ff6b6b; }
     #status.info    { color: var(--muted); }
 
-    /* ── fallback link ── */
-    #fallback-link {
+    /* ── tombol group ── */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ── tombol sekunder (fallback) ── */
+    .btn-fallback {
       display: none;
-      margin-top: 14px;
-      text-align: center;
-      font-size: .82rem;
-      color: var(--muted);
-    }
-    #fallback-link a {
-      color: var(--red);
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color .2s, color .2s, transform .1s;
       text-decoration: none;
+      text-align: center;
     }
-    #fallback-link a:hover { text-decoration: underline; }
+    .btn-fallback:hover  { border-color: var(--red); color: var(--red); }
+    .btn-fallback:active { transform: scale(.98); }
+    .btn-fallback.visible { display: block; }
 
     /* ── how-to ── */
     .howto {
@@ -215,10 +229,12 @@
       <button class="preset-btn" onclick="setPreset('account')">👤 Akun</button>
     </div>
 
-    <button class="btn-open" onclick="openNetflix()">BUKA DI APLIKASI</button>
+    <div class="btn-group">
+      <button class="btn-open" onclick="openNetflix()">BUKA DI APLIKASI</button>
+      <a id="btn-fallback" class="btn-fallback visible" href="https://www.netflix.com" target="_blank" rel="noopener">BUKA DI NETFLIX ↗</a>
+    </div>
 
     <p id="status" class="info">Masukkan URL Netflix lalu tekan tombol di atas.</p>
-    <p id="fallback-link">Aplikasi tidak terbuka? <a id="web-link" href="#">Buka di browser ↗</a></p>
   </div>
 
   <!-- cara kerja -->
@@ -260,7 +276,7 @@
       const s = document.getElementById('status');
       s.className = 'info';
       s.textContent = 'Siap dibuka.';
-      document.getElementById('fallback-link').style.display = 'none';
+      document.getElementById('btn-fallback').classList.remove('visible');
     }
 
     function setStatus(msg, type) {
@@ -317,11 +333,10 @@
         return;
       }
 
-      // Tampilkan fallback link
-      const fallbackEl  = document.getElementById('fallback-link');
-      const webLinkEl   = document.getElementById('web-link');
-      webLinkEl.href    = links.webUrl;
-      fallbackEl.style.display = 'block';
+      // Tampilkan tombol fallback — selalu ke beranda netflix.com
+      const fallbackBtn = document.getElementById('btn-fallback');
+      fallbackBtn.href = 'https://www.netflix.com';
+      fallbackBtn.classList.add('visible');
 
       setStatus('⏳ Membuka aplikasi Netflix…', 'info');
 
