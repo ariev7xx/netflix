@@ -3,62 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Netflix Launcher</title>
-
-<style>
-body{
-    background:#111;
-    color:white;
-    font-family:Arial;
-    text-align:center;
-    padding-top:100px;
-}
-
-button{
-    background:#e50914;
-    color:white;
-    border:none;
-    padding:15px 30px;
-    font-size:20px;
-    border-radius:10px;
-    cursor:pointer;
-}
-</style>
+<title>Netflix App Only</title>
 </head>
-<body>
+<body style="background:black;color:white;text-align:center;padding-top:50px;font-family:Arial;">
 
-<h2>Mencoba membuka Netflix...</h2>
+<h2>Membuka aplikasi Netflix...</h2>
 
-<button id="openBtn" style="display:none;">
-    Buka Netflix
+<button onclick="openNetflix()">
+Buka Netflix
 </button>
 
 <script>
 
 function openNetflix(){
 
-    window.open(
-        "intent://www.netflix.com/#Intent;" +
-        "scheme=https;" +
-        "package=com.netflix.mediaclient;" +
-        "S.browser_fallback_url=https%3A%2F%2Fwww.netflix.com;" +
-        "end",
-        "_blank"
-    );
+    window.location.href =
+    "intent://#Intent;" +
+    "package=com.netflix.mediaclient;" +
+    "scheme=netflix;" +
+    "end";
 }
 
-// coba otomatis dulu
-openNetflix();
-
-// jika gagal tampilkan tombol
 setTimeout(function(){
-    document.getElementById("openBtn").style.display = "inline-block";
-}, 2500);
-
-// tombol manual
-document.getElementById("openBtn").onclick = function(){
     openNetflix();
-};
+}, 500);
 
 </script>
 
