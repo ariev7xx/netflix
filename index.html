@@ -6,6 +6,11 @@
   <title>Buka di Netflix</title>
   <link rel="icon" type="image/png" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico">
   <link rel="shortcut icon" href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico">
+  <link rel="manifest" id="pwa-manifest">
+  <meta name="theme-color" content="#E50914">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Netflix Launcher">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -171,6 +176,26 @@
     .btn-fallback:active { transform: scale(.98); }
     .btn-fallback.visible { display: block; }
 
+    /* ── tombol install PWA ── */
+    #btn-install {
+      display: none;
+      width: 100%;
+      background: transparent;
+      border: 1px solid #4285f4;
+      border-radius: 8px;
+      color: #4285f4;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background .2s, color .2s, transform .1s;
+      margin-top: 10px;
+    }
+    #btn-install:hover  { background: #4285f4; color: #fff; }
+    #btn-install:active { transform: scale(.98); }
+    #btn-install.visible { display: block; }
+
     /* ── how-to ── */
     .howto {
       margin-top: 28px;
@@ -233,8 +258,10 @@
 
     <div class="btn-group">
       <button class="btn-open" onclick="openNetflix()">BUKA DI APLIKASI</button>
-      <a id="btn-fallback" class="btn-fallback visible" href="https://www.netflix.com" target="_blank" rel="noopener">BUKA NETFLIX ↗</a>
+      <a id="btn-fallback" class="btn-fallback visible" href="https://www.netflix.com/search" target="_blank" rel="noopener">BUKA NETFLIX ↗</a>
     </div>
+
+    <button id="btn-install" onclick="installPWA()">⬇ PASANG DI CHROME</button>
 
     <p id="status" class="info">Masukkan URL Netflix lalu tekan tombol di atas.</p>
   </div>
@@ -269,6 +296,48 @@
       account:  'https://www.netflix.com/youraccount',
     };
 
+    // ── PWA Manifest (inline blob) ──
+    const manifest = {
+      name: 'Netflix Launcher',
+      short_name: 'Netflix',
+      description: 'Buka Netflix di aplikasi atau browser',
+      start_url: location.href,
+      display: 'standalone',
+      background_color: '#0a0a0a',
+      theme_color: '#E50914',
+      icons: [
+        { src: 'https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico', sizes: '32x32', type: 'image/x-icon' }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
+
+    // ── PWA Install prompt ──
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('btn-install').classList.add('visible');
+    });
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('btn-install').classList.remove('visible');
+      deferredPrompt = null;
+    });
+
+    async function installPWA() {
+      if (!deferredPrompt) {
+        setStatus('ℹ️ Chrome belum siap atau aplikasi sudah terpasang.', 'info');
+        return;
+      }
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setStatus('✅ Aplikasi berhasil dipasang!', 'success');
+      }
+      deferredPrompt = null;
+      document.getElementById('btn-install').classList.remove('visible');
+    }
+
     function setPreset(key) {
       document.getElementById('urlInput').value = PRESETS[key];
       clearStatus();
@@ -287,84 +356,47 @@
       s.textContent = msg;
     }
 
-    /**
-     * Ubah URL netflix.com → deep-link nflx://
-     *
-     * Skema resmi Netflix Android:
-     *   nflx://www.netflix.com/title/<id>   → halaman judul
-     *   nflx://www.netflix.com/search       → halaman pencarian
-     *   nflx://www.netflix.com/             → beranda
-     *
-     * Untuk URL lain (yang tidak punya skema nflx yang mapan),
-     * kita gunakan intent:// agar Android tetap bisa mengarahkan.
-     */
     function buildDeepLink(rawUrl) {
       let url;
-      try {
-        url = new URL(rawUrl.trim());
-      } catch {
-        return null; // URL tidak valid
-      }
-
-      // Pastikan domain netflix
+      try { url = new URL(rawUrl.trim()); } catch { return null; }
       if (!url.hostname.includes('netflix.com')) return null;
-
-      // Ganti skema https → nflx
-      const nflxUrl = 'nflx://' + url.hostname + url.pathname + url.search + url.hash;
-
-      // Intent URL sebagai cadangan (lebih andal di beberapa Android)
-      const intentUrl =
-        'intent://' + url.hostname + url.pathname + url.search + url.hash +
-        '#Intent;scheme=https;package=com.netflix.mediaclient;end';
-
+      const nflxUrl   = 'nflx://' + url.hostname + url.pathname + url.search + url.hash;
+      const intentUrl = 'intent://' + url.hostname + url.pathname + url.search + url.hash +
+                        '#Intent;scheme=https;package=com.netflix.mediaclient;end';
       return { nflxUrl, intentUrl, webUrl: rawUrl.trim() };
     }
 
     function openNetflix() {
       const raw = document.getElementById('urlInput').value.trim();
-
-      if (!raw) {
-        setStatus('⚠️ Masukkan URL Netflix terlebih dahulu.', 'error');
-        return;
-      }
-
+      if (!raw) { setStatus('⚠️ Masukkan URL Netflix terlebih dahulu.', 'error'); return; }
       const links = buildDeepLink(raw);
+      if (!links) { setStatus('⚠️ URL tidak valid atau bukan dari netflix.com.', 'error'); return; }
 
-      if (!links) {
-        setStatus('⚠️ URL tidak valid atau bukan dari netflix.com.', 'error');
-        return;
-      }
-
-      // Tampilkan tombol fallback — selalu ke beranda netflix.com
       const fallbackBtn = document.getElementById('btn-fallback');
-      fallbackBtn.href = 'https://www.netflix.com';
+      fallbackBtn.href = 'https://www.netflix.com/search';
       fallbackBtn.classList.add('visible');
 
       setStatus('⏳ Membuka aplikasi Netflix…', 'info');
-
-      // Coba buka via nflx:// (intent URL lebih andal di Android modern)
       const isAndroid = /android/i.test(navigator.userAgent);
+      window.location.href = isAndroid ? links.intentUrl : links.nflxUrl;
 
-      if (isAndroid) {
-        // Gunakan intent:// di Android agar bisa fallback ke Play Store
-        window.location.href = links.intentUrl;
-      } else {
-        // Desktop/iOS: coba nflx://, fallback ke web
-        window.location.href = links.nflxUrl;
-      }
-
-      // Jika setelah 2 detik halaman masih aktif, berarti app tidak terbuka
       setTimeout(() => {
-        setStatus('ℹ️ Aplikasi tidak terbuka? Gunakan link fallback di bawah.', 'info');
+        setStatus('ℹ️ Aplikasi tidak terbuka? Gunakan tombol browser di atas.', 'info');
       }, 2000);
     }
 
-    // Bisa juga tekan Enter
+    // Tekan Enter
     document.getElementById('urlInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') openNetflix();
     });
 
-
+    // Otomatis buka Netflix Search saat halaman dimuat
+    window.addEventListener('load', () => {
+      const isAndroid = /android/i.test(navigator.userAgent);
+      const intentUrl = 'intent://www.netflix.com/search#Intent;scheme=https;package=com.netflix.mediaclient;end';
+      const nflxUrl   = 'nflx://www.netflix.com/search';
+      window.location.href = isAndroid ? intentUrl : nflxUrl;
+    });
   </script>
 </body>
 </html>
