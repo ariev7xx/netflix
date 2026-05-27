@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Intent Launcher</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#111;
+    color:white;
+    text-align:center;
+    padding-top:40px;
+}
+
+.box{
+    width:320px;
+    margin:auto;
+    background:#1e1e1e;
+    padding:20px;
+    border-radius:12px;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#2d2d2d;
+    color:white;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+    background:#e50914;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.intentBox{
+    margin-top:20px;
+    word-break:break-all;
+    background:#000;
+    padding:10px;
+    border-radius:8px;
+    font-size:12px;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+
+<h2>Custom Android Intent</h2>
+
+<input type="text" id="url"
+placeholder="www.netflix.com/title/80192098">
+
+<input type="text" id="scheme"
+placeholder="https"
+value="https">
+
+<input type="text" id="package"
+placeholder="com.netflix.mediaclient">
+
+<button onclick="openIntent()">
+Buka Aplikasi
+</button>
+
+<button onclick="generateIntent()">
+Generate Intent
+</button>
+
+<div class="intentBox" id="result">
+Intent muncul di sini
+</div>
+
+</div>
+
+<script>
+
+function buildIntent(){
+
+    let url = document.getElementById("url").value.trim();
+    let scheme = document.getElementById("scheme").value.trim();
+    let pkg = document.getElementById("package").value.trim();
+
+    return `intent://${url}#Intent;scheme=${scheme};package=${pkg};end`;
+
+}
+
+function generateIntent(){
+
+    let intent = buildIntent();
+
+    document.getElementById("result").innerText = intent;
+
+}
+
+function openIntent(){
+
+    let intent = buildIntent();
+
+    window.location.href = intent;
+
+}
+
+</script>
+
+</body>
+</html>
