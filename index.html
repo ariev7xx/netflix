@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Open Netflix</title>
+<title>Netflix Open</title>
 
 <style>
 body{
     background:#111;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -16,35 +17,21 @@ body{
     font-family:Arial;
 }
 
-button{
+a{
     background:#E50914;
     color:white;
-    border:none;
     padding:18px 40px;
-    font-size:22px;
+    text-decoration:none;
     border-radius:12px;
+    font-size:22px;
 }
 </style>
 </head>
 <body>
 
-<button onclick="openNetflix()">
-OPEN NETFLIX
-</button>
-
-<script>
-
-function openNetflix(){
-
-    location.href =
-    "intent:#Intent;" +
-    "action=android.intent.action.MAIN;" +
-    "category=android.intent.category.LAUNCHER;" +
-    "package=com.netflix.mediaclient;" +
-    "end";
-}
-
-</script>
+<a href="nflx://www.netflix.com">
+    OPEN NETFLIX
+</a>
 
 </body>
 </html>
