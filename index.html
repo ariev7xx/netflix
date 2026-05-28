@@ -290,7 +290,7 @@
   <script>
     // Preset shortcuts
     const PRESETS = {
-      home:     'https://www.netflix.com/',
+      home:     'https://www.netflix.com/browse',
       search:   'https://www.netflix.com/search',
       download: 'https://www.netflix.com/downloads',
       account:  'https://www.netflix.com/youraccount',
@@ -393,8 +393,8 @@
     // Otomatis buka Netflix Search saat halaman dimuat
     window.addEventListener('load', () => {
       const isAndroid = /android/i.test(navigator.userAgent);
-      const intentUrl = 'intent://www.netflix.com/search#Intent;scheme=https;package=com.netflix.mediaclient;end';
-      const nflxUrl   = 'nflx://www.netflix.com/search';
+      const intentUrl = 'intent://www.netflix.com/browse#Intent;scheme=https;package=com.netflix.mediaclient;end';
+      const nflxUrl   = 'nflx://www.netflix.com/browse';
       window.location.href = isAndroid ? intentUrl : nflxUrl;
     });
   </script>
