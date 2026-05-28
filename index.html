@@ -37,7 +37,6 @@
       padding: 24px;
     }
 
-    /* ── logo ── */
     .logo {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 2.4rem;
@@ -54,7 +53,6 @@
       margin-bottom: 36px;
     }
 
-    /* ── card ── */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -119,6 +117,119 @@
     }
     .preset-btn:hover { border-color: var(--red); color: var(--text); }
 
+    /* ── genre browser ── */
+    .genre-section {
+      margin-bottom: 20px;
+    }
+    .genre-section-title {
+      font-size: .7rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .genre-search-wrap {
+      position: relative;
+      margin-bottom: 10px;
+    }
+    .genre-search-wrap input {
+      width: 100%;
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px 8px 32px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .8rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .genre-search-wrap input:focus { border-color: var(--red); }
+    .genre-search-wrap input::placeholder { color: #444; }
+    .genre-search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: .8rem;
+      pointer-events: none;
+    }
+
+    .genre-category-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    .genre-tab {
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .7rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .genre-tab:hover,
+    .genre-tab.active { border-color: var(--red); color: var(--text); background: rgba(229,9,20,.1); }
+
+    .genre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .genre-grid::-webkit-scrollbar { width: 4px; }
+    .genre-grid::-webkit-scrollbar-track { background: #1c1c1c; border-radius: 2px; }
+    .genre-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .genre-grid::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+    .genre-item {
+      background: #1c1c1c;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .genre-item:hover {
+      border-color: var(--red);
+      background: rgba(229,9,20,.08);
+    }
+    .genre-item.selected {
+      border-color: var(--red);
+      background: rgba(229,9,20,.15);
+    }
+    .genre-emoji { font-size: .9rem; flex-shrink: 0; }
+    .genre-name {
+      font-size: .72rem;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .genre-code {
+      font-size: .62rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .genre-empty {
+      grid-column: span 2;
+      text-align: center;
+      color: var(--muted);
+      font-size: .78rem;
+      padding: 20px 0;
+    }
+
     /* ── main button ── */
     .btn-open {
       width: 100%;
@@ -136,7 +247,6 @@
     .btn-open:hover  { background: var(--red-dk); }
     .btn-open:active { transform: scale(.98); }
 
-    /* ── status ── */
     #status {
       margin-top: 16px;
       font-size: .82rem;
@@ -148,14 +258,12 @@
     #status.error   { color: #ff6b6b; }
     #status.info    { color: var(--muted); }
 
-    /* ── tombol group ── */
     .btn-group {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    /* ── tombol sekunder (fallback) ── */
     .btn-fallback {
       display: none;
       width: 100%;
@@ -176,7 +284,6 @@
     .btn-fallback:active { transform: scale(.98); }
     .btn-fallback.visible { display: block; }
 
-    /* ── tombol install PWA ── */
     #btn-install {
       display: none;
       width: 100%;
@@ -196,7 +303,6 @@
     #btn-install:active { transform: scale(.98); }
     #btn-install.visible { display: block; }
 
-    /* ── how-to ── */
     .howto {
       margin-top: 28px;
       width: 100%;
@@ -248,12 +354,27 @@
       />
     </div>
 
-    <p class="preset-label">Contoh cepat</p>
+    <p class="preset-label">Pintasan cepat</p>
     <div class="presets">
       <button class="preset-btn" onclick="setPreset('home')">🏠 Beranda</button>
       <button class="preset-btn" onclick="setPreset('search')">🔍 Cari</button>
-      <button class="preset-btn" onclick="setPreset('download')">⬇ Unduhan</button>
       <button class="preset-btn" onclick="setPreset('account')">👤 Akun</button>
+    </div>
+
+    <!-- Genre Browser -->
+    <div class="genre-section">
+      <div class="genre-section-title">
+        <span>🎬 Jelajah Genre</span>
+        <span id="genre-count" style="font-size:.65rem;color:var(--muted)"></span>
+      </div>
+
+      <div class="genre-search-wrap">
+        <span class="genre-search-icon">🔍</span>
+        <input type="text" id="genreSearch" placeholder="Cari genre..." oninput="filterGenres()" />
+      </div>
+
+      <div class="genre-category-tabs" id="categoryTabs"></div>
+      <div class="genre-grid" id="genreGrid"></div>
     </div>
 
     <div class="btn-group">
@@ -263,15 +384,14 @@
 
     <button id="btn-install" onclick="installPWA()">⬇ PASANG DI CHROME</button>
 
-    <p id="status" class="info">Masukkan URL Netflix lalu tekan tombol di atas.</p>
+    <p id="status" class="info">Masukkan URL Netflix atau pilih genre di atas.</p>
   </div>
 
-  <!-- cara kerja -->
   <div class="howto">
     <p class="howto-title">Cara kerja</p>
     <div class="step">
       <div class="step-num">1</div>
-      <p>Tempel <strong>URL Netflix</strong> (netflix.com/title/...) ke kolom di atas.</p>
+      <p>Tempel <strong>URL Netflix</strong> atau pilih <strong>genre</strong> dari daftar di atas.</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
@@ -288,15 +408,146 @@
   </div>
 
   <script>
-    // Preset shortcuts
+    // ── Genre Data ──
+    const GENRES = [
+      // Aksi & Petualangan
+      { name: "Aksi & Petualangan", code: 1365, emoji: "⚔️", cat: "Aksi" },
+      { name: "Film Aksi Asia", code: 77232, emoji: "🥋", cat: "Aksi" },
+      { name: "Film Aksi & Petualangan Klasik", code: 46576, emoji: "🗡️", cat: "Aksi" },
+      { name: "Film Komedi Aksi", code: 43040, emoji: "💥", cat: "Aksi" },
+      { name: "Film Superhero", code: 10118, emoji: "🦸", cat: "Aksi" },
+      { name: "Thriller Aksi", code: 43048, emoji: "🔫", cat: "Aksi" },
+      { name: "Film Petualangan", code: 7442, emoji: "🗺️", cat: "Aksi" },
+      { name: "Film Martial Arts", code: 8985, emoji: "🥊", cat: "Aksi" },
+      { name: "Film Militer & Perang", code: 2125, emoji: "🪖", cat: "Aksi" },
+      { name: "Petualangan Luar Angkasa", code: 14779, emoji: "🚀", cat: "Aksi" },
+
+      // Komedi
+      { name: "Komedi", code: 6548, emoji: "😂", cat: "Komedi" },
+      { name: "Komedi Gelap", code: 869, emoji: "🖤", cat: "Komedi" },
+      { name: "Komedi Romantis", code: 5475, emoji: "💕", cat: "Komedi" },
+      { name: "Komedi Olahraga", code: 5286, emoji: "⚽", cat: "Komedi" },
+      { name: "Komedi Dewasa", code: 11881, emoji: "🔞", cat: "Komedi" },
+      { name: "Komedi Situasi (Sitcom)", code: 10375, emoji: "📺", cat: "Komedi" },
+      { name: "Komedi Sketsa", code: 11559, emoji: "🎭", cat: "Komedi" },
+      { name: "Stand-Up Comedy", code: 11559, emoji: "🎤", cat: "Komedi" },
+      { name: "Mockumentary", code: 26, emoji: "🎬", cat: "Komedi" },
+      { name: "Parodi", code: 4922, emoji: "😜", cat: "Komedi" },
+
+      // Drama
+      { name: "Drama", code: 5763, emoji: "🎭", cat: "Drama" },
+      { name: "Drama Romantis", code: 1255, emoji: "❤️", cat: "Drama" },
+      { name: "Drama Hukum", code: 10955, emoji: "⚖️", cat: "Drama" },
+      { name: "Drama Medis", code: 6998, emoji: "🏥", cat: "Drama" },
+      { name: "Drama Militer", code: 25804, emoji: "🪖", cat: "Drama" },
+      { name: "Drama Politik", code: 6616, emoji: "🏛️", cat: "Drama" },
+      { name: "Drama Keluarga", code: 9873, emoji: "👨‍👩‍👧", cat: "Drama" },
+      { name: "Drama Periode / Sejarah", code: 12123, emoji: "📜", cat: "Drama" },
+      { name: "Drama Sosial", code: 3947, emoji: "🤝", cat: "Drama" },
+      { name: "Drama Teen", code: 9299, emoji: "🎒", cat: "Drama" },
+
+      // Horor
+      { name: "Film Horor", code: 8711, emoji: "👻", cat: "Horor" },
+      { name: "Horor Supernatural", code: 42023, emoji: "🦹", cat: "Horor" },
+      { name: "Slasher & Pembunuhan Serial", code: 8646, emoji: "🔪", cat: "Horor" },
+      { name: "Zombie Horor", code: 75405, emoji: "🧟", cat: "Horor" },
+      { name: "Horor Komedi", code: 89585, emoji: "😱", cat: "Horor" },
+      { name: "Horor Psikologis", code: 115305, emoji: "🧠", cat: "Horor" },
+      { name: "Monster & Makhluk", code: 947, emoji: "👾", cat: "Horor" },
+      { name: "Horor Iblis & Setan", code: 6998, emoji: "😈", cat: "Horor" },
+      { name: "Horor Bertahan Hidup", code: 8646, emoji: "🏚️", cat: "Horor" },
+      { name: "Teror & Thriller Horor", code: 75804, emoji: "😰", cat: "Horor" },
+
+      // Sci-Fi & Fantasi
+      { name: "Sci-Fi & Fantasi", code: 1492, emoji: "🛸", cat: "Sci-Fi" },
+      { name: "Film Fantasi", code: 9744, emoji: "🧙", cat: "Sci-Fi" },
+      { name: "Film Sci-Fi", code: 1694, emoji: "🤖", cat: "Sci-Fi" },
+      { name: "Alien & Luar Angkasa", code: 3327, emoji: "👽", cat: "Sci-Fi" },
+      { name: "Dystopia", code: 10606, emoji: "🌆", cat: "Sci-Fi" },
+      { name: "Steampunk", code: 251735, emoji: "⚙️", cat: "Sci-Fi" },
+      { name: "Sihir & Penyihir", code: 81552046, emoji: "🪄", cat: "Sci-Fi" },
+      { name: "Perjalanan Waktu", code: 4734, emoji: "⏰", cat: "Sci-Fi" },
+      { name: "Pasca Apokalips", code: 187902, emoji: "💀", cat: "Sci-Fi" },
+      { name: "Cyberpunk", code: 10606, emoji: "💻", cat: "Sci-Fi" },
+
+      // Dokumenter
+      { name: "Dokumenter", code: 6839, emoji: "🎥", cat: "Dokumenter" },
+      { name: "Dokumenter Kriminal", code: 9875, emoji: "🔍", cat: "Dokumenter" },
+      { name: "Dokumenter Alam", code: 48768, emoji: "🌿", cat: "Dokumenter" },
+      { name: "Dokumenter Olahraga", code: 180, emoji: "🏆", cat: "Dokumenter" },
+      { name: "Dokumenter Musik", code: 17647, emoji: "🎵", cat: "Dokumenter" },
+      { name: "Dokumenter Perjalanan", code: 1159, emoji: "✈️", cat: "Dokumenter" },
+      { name: "Dokumenter Politik", code: 7018, emoji: "🏛️", cat: "Dokumenter" },
+      { name: "Dokumenter Militer & Perang", code: 4006, emoji: "⚔️", cat: "Dokumenter" },
+      { name: "Dokumenter Sains & Alam", code: 2595, emoji: "🔬", cat: "Dokumenter" },
+      { name: "Dokumenter Sosial", code: 3675, emoji: "👥", cat: "Dokumenter" },
+
+      // Anime
+      { name: "Anime", code: 7424, emoji: "🌸", cat: "Anime" },
+      { name: "Anime Aksi", code: 2653, emoji: "⚡", cat: "Anime" },
+      { name: "Anime Sci-Fi", code: 1796, emoji: "🤖", cat: "Anime" },
+      { name: "Anime Drama", code: 452, emoji: "😭", cat: "Anime" },
+      { name: "Anime Komedi", code: 9302, emoji: "😄", cat: "Anime" },
+      { name: "Anime Horor", code: 10695, emoji: "👹", cat: "Anime" },
+      { name: "Anime Romantis", code: 8707, emoji: "💗", cat: "Anime" },
+      { name: "Anime Fantasi", code: 11346, emoji: "🐉", cat: "Anime" },
+      { name: "Anime Olahraga", code: 6721, emoji: "🏅", cat: "Anime" },
+      { name: "Anime Petualangan", code: 2653, emoji: "🗺️", cat: "Anime" },
+
+      // Thriller & Misteri
+      { name: "Thriller & Misteri", code: 8933, emoji: "🕵️", cat: "Thriller" },
+      { name: "Thriller Psikologis", code: 5505, emoji: "🧠", cat: "Thriller" },
+      { name: "Film Spy / Mata-mata", code: 10702, emoji: "🕶️", cat: "Thriller" },
+      { name: "Film Kriminal", code: 31574, emoji: "🔫", cat: "Thriller" },
+      { name: "Film Detektif", code: 26126, emoji: "🔎", cat: "Thriller" },
+      { name: "Thriller Heist", code: 9150, emoji: "💰", cat: "Thriller" },
+      { name: "Misteri & Suspense", code: 9994, emoji: "❓", cat: "Thriller" },
+      { name: "True Crime", code: 9875, emoji: "🚨", cat: "Thriller" },
+      { name: "Thriller Hukum", code: 10955, emoji: "⚖️", cat: "Thriller" },
+      { name: "Thriller Politik", code: 10775, emoji: "🏴", cat: "Thriller" },
+
+      // Romantis
+      { name: "Film Romantis", code: 8883, emoji: "💑", cat: "Romantis" },
+      { name: "Drama Romantis", code: 1255, emoji: "🌹", cat: "Romantis" },
+      { name: "Komedi Romantis", code: 5475, emoji: "💍", cat: "Romantis" },
+      { name: "Romantis Fantasi", code: 6077, emoji: "✨", cat: "Romantis" },
+      { name: "Film Cinta Klasik", code: 31273, emoji: "📽️", cat: "Romantis" },
+      { name: "Cinta Beda Budaya", code: 7153, emoji: "🌍", cat: "Romantis" },
+
+      // Keluarga & Anak
+      { name: "Film Keluarga", code: 51056, emoji: "👨‍👩‍👧‍👦", cat: "Keluarga" },
+      { name: "Film Anak", code: 27480, emoji: "🧒", cat: "Keluarga" },
+      { name: "Animasi Keluarga", code: 11177, emoji: "🎨", cat: "Keluarga" },
+      { name: "Animasi Dewasa", code: 11881, emoji: "🖼️", cat: "Keluarga" },
+      { name: "Petualangan Keluarga", code: 1401, emoji: "🌟", cat: "Keluarga" },
+      { name: "Komedi Keluarga", code: 9736, emoji: "🤗", cat: "Keluarga" },
+
+      // Musik & Seni
+      { name: "Film Musikal", code: 13335, emoji: "🎭", cat: "Musik" },
+      { name: "Dokumenter Musik", code: 17647, emoji: "🎶", cat: "Musik" },
+      { name: "Konser & Pertunjukan", code: 2856, emoji: "🎸", cat: "Musik" },
+      { name: "K-Pop", code: 81332708, emoji: "🇰🇷", cat: "Musik" },
+
+      // Olahraga
+      { name: "Film Olahraga", code: 4370, emoji: "🏃", cat: "Olahraga" },
+      { name: "Dokumenter Olahraga", code: 180, emoji: "🏆", cat: "Olahraga" },
+      { name: "Film Tinju", code: 12443, emoji: "🥊", cat: "Olahraga" },
+      { name: "Film Sepak Bola", code: 12549, emoji: "⚽", cat: "Olahraga" },
+    ];
+
+    const CATEGORIES = [...new Set(GENRES.map(g => g.cat))];
+
+    let activeCategory = "Semua";
+    let filteredGenres = [...GENRES];
+
+    // ── Preset shortcuts ──
     const PRESETS = {
-      home:     'https://www.netflix.com/browse',
-      search:   'https://www.netflix.com/search',
-      download: 'https://www.netflix.com/downloads',
-      account:  'https://www.netflix.com/youraccount',
+      home:    'https://www.netflix.com/browse',
+      search:  'https://www.netflix.com/search',
+      account: 'https://www.netflix.com/youraccount',
     };
 
-    // ── PWA Manifest (inline blob) ──
+    // ── PWA Manifest ──
     const manifest = {
       name: 'Netflix Launcher',
       short_name: 'Netflix',
@@ -312,7 +563,7 @@
     const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
     document.getElementById('pwa-manifest').href = URL.createObjectURL(blob);
 
-    // ── PWA Install prompt ──
+    // ── PWA Install ──
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', e => {
       e.preventDefault();
@@ -325,28 +576,89 @@
     });
 
     async function installPWA() {
-      if (!deferredPrompt) {
-        setStatus('ℹ️ Chrome belum siap atau aplikasi sudah terpasang.', 'info');
-        return;
-      }
+      if (!deferredPrompt) { setStatus('ℹ️ Chrome belum siap atau aplikasi sudah terpasang.', 'info'); return; }
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setStatus('✅ Aplikasi berhasil dipasang!', 'success');
-      }
+      if (outcome === 'accepted') setStatus('✅ Aplikasi berhasil dipasang!', 'success');
       deferredPrompt = null;
       document.getElementById('btn-install').classList.remove('visible');
     }
 
+    // ── Genre UI ──
+    function buildCategoryTabs() {
+      const tabs = document.getElementById('categoryTabs');
+      const allCats = ['Semua', ...CATEGORIES];
+      tabs.innerHTML = allCats.map(cat =>
+        `<button class="genre-tab ${cat === 'Semua' ? 'active' : ''}" onclick="setCategory('${cat}')">${cat}</button>`
+      ).join('');
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      document.querySelectorAll('.genre-tab').forEach(b => {
+        b.classList.toggle('active', b.textContent === cat);
+      });
+      document.getElementById('genreSearch').value = '';
+      renderGenres();
+    }
+
+    function filterGenres() {
+      activeCategory = 'Semua';
+      document.querySelectorAll('.genre-tab').forEach(b => {
+        b.classList.toggle('active', b.textContent === 'Semua');
+      });
+      renderGenres();
+    }
+
+    function renderGenres() {
+      const q = document.getElementById('genreSearch').value.toLowerCase().trim();
+      filteredGenres = GENRES.filter(g => {
+        const matchCat = activeCategory === 'Semua' || g.cat === activeCategory;
+        const matchQ   = !q || g.name.toLowerCase().includes(q) || String(g.code).includes(q);
+        return matchCat && matchQ;
+      });
+
+      const grid = document.getElementById('genreGrid');
+      const count = document.getElementById('genre-count');
+      count.textContent = `${filteredGenres.length} genre`;
+
+      if (!filteredGenres.length) {
+        grid.innerHTML = '<div class="genre-empty">Tidak ditemukan genre "' + (document.getElementById('genreSearch').value) + '"</div>';
+        return;
+      }
+
+      grid.innerHTML = filteredGenres.map(g => `
+        <div class="genre-item" onclick="selectGenre(${g.code}, '${g.name.replace(/'/g,"\\'")}')">
+          <span class="genre-emoji">${g.emoji}</span>
+          <div>
+            <div class="genre-name">${g.name}</div>
+            <div class="genre-code">#${g.code}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectGenre(code, name) {
+      const url = `https://www.netflix.com/browse/genre/${code}`;
+      document.getElementById('urlInput').value = url;
+      document.getElementById('btn-fallback').href = url;
+
+      // Highlight selected
+      document.querySelectorAll('.genre-item').forEach(el => el.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+
+      setStatus(`✅ Genre dipilih: ${name}`, 'success');
+    }
+
+    // ── Helpers ──
     function setPreset(key) {
       document.getElementById('urlInput').value = PRESETS[key];
+      document.getElementById('btn-fallback').href = PRESETS[key];
       clearStatus();
     }
 
     function clearStatus() {
-      const s = document.getElementById('status');
-      s.className = 'info';
-      s.textContent = 'Siap dibuka.';
+      setStatus('Siap dibuka.', 'info');
       document.getElementById('btn-fallback').classList.remove('visible');
     }
 
@@ -368,12 +680,12 @@
 
     function openNetflix() {
       const raw = document.getElementById('urlInput').value.trim();
-      if (!raw) { setStatus('⚠️ Masukkan URL Netflix terlebih dahulu.', 'error'); return; }
+      if (!raw) { setStatus('⚠️ Masukkan URL Netflix atau pilih genre terlebih dahulu.', 'error'); return; }
       const links = buildDeepLink(raw);
       if (!links) { setStatus('⚠️ URL tidak valid atau bukan dari netflix.com.', 'error'); return; }
 
       const fallbackBtn = document.getElementById('btn-fallback');
-      fallbackBtn.href = 'https://www.netflix.com/';
+      fallbackBtn.href = links.webUrl;
       fallbackBtn.classList.add('visible');
 
       setStatus('⏳ Membuka aplikasi Netflix…', 'info');
@@ -385,12 +697,15 @@
       }, 2000);
     }
 
-    // Tekan Enter
     document.getElementById('urlInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') openNetflix();
     });
 
-    // Otomatis buka Netflix Search saat halaman dimuat
+    // Init
+    buildCategoryTabs();
+    renderGenres();
+
+    // Auto-open on load
     window.addEventListener('load', () => {
       const isAndroid = /android/i.test(navigator.userAgent);
       const intentUrl = 'intent://www.netflix.com/browse#Intent;scheme=https;package=com.netflix.mediaclient;end';
