@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Netflix Genre Launcher</title>
+
+  <link rel="icon" type="image/png"
+    href="https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#0a0a0a;
+      color:white;
+      font-family:Arial,sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .card{
+      width:100%;
+      max-width:430px;
+      background:#141414;
+      border:1px solid #222;
+      border-radius:16px;
+      padding:24px;
+    }
+
+    .logo{
+      text-align:center;
+      color:#E50914;
+      font-size:38px;
+      font-weight:bold;
+      margin-bottom:20px;
+      letter-spacing:4px;
+    }
+
+    .title{
+      font-size:13px;
+      color:#888;
+      margin-bottom:12px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+    }
+
+    .genres{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .genre-btn{
+      background:#1c1c1c;
+      border:1px solid #333;
+      color:white;
+      padding:14px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:.2s;
+      font-size:14px;
+    }
+
+    .genre-btn:hover{
+      border-color:#E50914;
+      background:#222;
+    }
+
+    .open-btn{
+      width:100%;
+      background:#E50914;
+      border:none;
+      color:white;
+      padding:16px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:bold;
+      letter-spacing:2px;
+    }
+
+    .open-btn:hover{
+      background:#b20710;
+    }
+
+    #status{
+      margin-top:15px;
+      text-align:center;
+      color:#888;
+      font-size:14px;
+    }
+
+    .selected{
+      border-color:#E50914 !important;
+      background:#2a1112;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="logo">NETFLIX</div>
+
+  <div class="title">Pilih Genre</div>
+
+  <div class="genres">
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'1365')">
+      🔥 Action
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'7424')">
+      🎌 Anime
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'6548')">
+      😂 Comedy
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'8711')">
+      👻 Horror
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'1492')">
+      🚀 Sci-Fi
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'8883')">
+      ❤️ Romance
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'8933')">
+      🔪 Thriller
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'6839')">
+      🎥 Documentary
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'2638104')">
+      🇰🇷 K-Drama
+    </button>
+
+    <button class="genre-btn"
+      onclick="selectGenre(this,'75405')">
+      🧟 Zombie
+    </button>
+
+  </div>
+
+  <button class="open-btn"
+    onclick="openGenre()">
+    BUKA DI NETFLIX
+  </button>
+
+  <div id="status">
+    Pilih genre terlebih dahulu.
+  </div>
+
+</div>
+
+<script>
+
+let selectedGenre = null;
+
+function selectGenre(button, code){
+
+  selectedGenre = code;
+
+  document.querySelectorAll('.genre-btn')
+    .forEach(btn => btn.classList.remove('selected'));
+
+  button.classList.add('selected');
+
+  document.getElementById('status').innerText =
+    'Genre dipilih: ' + code;
+}
+
+function openGenre(){
+
+  if(!selectedGenre){
+    document.getElementById('status').innerText =
+      'Pilih genre dulu.';
+    return;
+  }
+
+  const webUrl =
+    'https://www.netflix.com/browse/genre/' + selectedGenre;
+
+  const intentUrl =
+    'intent://www.netflix.com/browse/genre/' + selectedGenre +
+    '#Intent;scheme=https;package=com.netflix.mediaclient;end';
+
+  const nflxUrl =
+    'nflx://www.netflix.com/browse/genre/' + selectedGenre;
+
+  const isAndroid =
+    /android/i.test(navigator.userAgent);
+
+  document.getElementById('status').innerText =
+    'Membuka Netflix...';
+
+  window.location.href =
+    isAndroid ? intentUrl : nflxUrl;
+
+  setTimeout(() => {
+    window.open(webUrl,'_blank');
+  },2000);
+}
+
+</script>
+
+</body>
+  </html>
